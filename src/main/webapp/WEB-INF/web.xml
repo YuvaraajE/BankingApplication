@@ -1,0 +1,78 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        id="com.BankingApplication"
+        version="2.5">
+
+  <display-name>Archetype Created Web Application</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <!--  Servlets-->
+  <servlet>
+    <servlet-name>index</servlet-name>
+    <jsp-file>/index.jsp</jsp-file>
+  </servlet>
+
+  <servlet>
+    <servlet-name>createCustomer</servlet-name>
+    <servlet-class>com.bank.Controller.CreateCustomer</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>customersAPI</servlet-name>
+    <servlet-class>com.bank.API.Customer.CustomersAPI</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>accountAPI</servlet-name>
+    <servlet-class>com.bank.API.Account.AccountAPI</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>accountsAPI</servlet-name>
+    <servlet-class>com.bank.API.Account.AccountsAPI</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>customerAPI</servlet-name>
+    <servlet-class>com.bank.API.Customer.CustomerAPI</servlet-class>
+  </servlet>
+  <!--mapping-->
+  <servlet-mapping>
+    <servlet-name>index</servlet-name>
+    <url-pattern>/*/</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>createCustomer</servlet-name>
+    <url-pattern>/register</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  <servlet-name>customerAPI</servlet-name>
+  <url-pattern>/api/customer/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>customersAPI</servlet-name>
+    <url-pattern>/api/customer</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>accountAPI</servlet-name>
+    <url-pattern>/api/account/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>accountsAPI</servlet-name>
+    <url-pattern>/api/account</url-pattern>
+  </servlet-mapping>
+
+</web-app>
