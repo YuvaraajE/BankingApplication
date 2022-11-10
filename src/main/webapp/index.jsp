@@ -1,3 +1,6 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.bank.BeanClass.Customer, com.bank.BeanClass.Account"%>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,19 +10,187 @@
     <title>Bank - Home</title>
 </head>
 <body>
-  <nav class="navbar navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand">Banking Application</a>
-      <p class="navbar-text">Hello, Yuvaraaj E</p>
-      <form class="d-flex">
-        <a class="nav-link m-1" href="Bank/customer/edit/">Edit Profile</a>
-        <button class="btn btn-outline-danger" type="submit">Logout</button>
-      </form>
+  <div class="container-fluid p-0">
+  <!------------------------------------------------ Edit Customer Modal ------------------------------------>
+  <div class="modal fade" id="editCustomer" tabindex="-1" aria-labelledby="editCustomerLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editCustomerLabel">Edit Customer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="post">
+            <div class="mb-3">
+              <label for="name" class="col-form-label">Name:</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getName() %>">
+            </div>
+            <div class="mb-3">
+              <label for="accountNumber" class="col-form-label">Account Number:</label>
+              <input type="text" class="form-control" id="accountNumber" name="accountNumber" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getAccountNumber() %>" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="col-form-label">E-mail:</label>
+              <input type="email" class="form-control" id="email" name="email" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getEmail() %>" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="col-form-label">Password:</label>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getPassword() %>">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-outline-danger">Edit</button>
+        </div>
+      </div>
     </div>
-  </nav>
-    <button>Deposit</button>
-    <button>Withdraw</button>
-    <button>Amount Transfer</button>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand fs-3 ms-2">Banking Application</a>
+      <form class="d-flex">
+        <a class="nav-link link-light my-1 me-2" data-bs-toggle="modal" data-bs-target="#editCustomer" type="button">Edit Profile</a>
+        <a href="http://localhost:8080/Bank/logout" class="btn btn-outline-danger me-3 my-1">Logout</a>
+      </form>
+    </nav>
+    <div class="m-5">
+      <div class="d-flex justify-content-between">
+        <h3 class="fs-3">Hi, <%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getName() %> </h3>
+        <h3 class="fs-3">Current Balance: &#x20b9;<%= ((com.bank.BeanClass.Account)session.getAttribute("account")).getBalance() %> </h3>
+      </div>
+      <div class="m-5">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#deposit"  class="btn btn-outline-dark m-2">Deposit</button>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#withdraw" class="btn btn-outline-dark m-2">Withdraw</button>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#transfer" class="btn btn-outline-dark m-2">Amount Transfer</button>
+
+        <!------------------------------------------------ Deposit Modal ------------------------------------>
+        <div class="modal fade" id="deposit" tabindex="-1" aria-labelledby="depositLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="depositLabel">Deposit Money</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post">
+                  <div class="mb-3">
+                    <label for="depositMoney" class="col-form-label">Deposit Money:</label>
+                    <input type="text" class="form-control" id="depositMoney" name="depositMoney" placeholder="Deposit Amount">
+                  </div>
+                  <div class="mb-3">
+                    <label for="description" class="col-form-label">Description:</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Short Description...">
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="col-form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-danger">Deposit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!------------------------------------------------ Withdraw Modal ------------------------------------>
+        <div class="modal fade" id="withdraw" tabindex="-1" aria-labelledby="withdrawLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="withdrawLabel">Withdraw Money</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post">
+                  <div class="mb-3">
+                    <label for="withdrawMoney" class="col-form-label">Withdraw Money:</label>
+                    <input type="text" class="form-control" id="withdrawMoney" name="withdrawMoney" placeholder="Withdraw Amount">
+                  </div>
+                  <div class="mb-3">
+                    <label for="description" class="col-form-label">Description:</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Short Description...">
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="col-form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-danger">Withdraw</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!------------------------------------------------ Transfer Modal ------------------------------------>
+        <div class="modal fade" id="transfer" tabindex="-1" aria-labelledby="transferLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="transferLabel">Transfer Money</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="" method="post">
+                  <div class="mb-3">
+                    <label for="transferMoney" class="col-form-label">Transfer Money:</label>
+                    <input type="text" class="form-control" id="transferMoney" name="transferMoney" placeholder="Transfer Amount">
+                  </div>
+                  <div class="mb-3">
+                    <label for="transferAccount" class="col-form-label">Transfer To:</label>
+                    <input type="text" class="form-control" id="transferAccount" name="transferAccount" placeholder="Account Number">
+                  </div>
+                  <div class="mb-3">
+                    <label for="description" class="col-form-label">Description:</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Short Description...">
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="col-form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-danger">Transfer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="m-5">
+        <table class="table table-striped">
+          <tr>
+            <th>S.No</th>
+            <th>Time</th>
+            <th>Description</th>
+            <th>Credit</th>
+            <th>Debit</th>
+            <th>Balance</th>
+          </tr>
+          <tr>
+            <c:forEach items="${allFestivals}" var="festival">
+              <tr>
+                  <td>${festival.festivalName}</td>
+                  <td>${festival.location}</td>
+                  <td>${festival.startDate}</td>
+                  <td>${festival.endDate}</td>
+                  <td>${festival.URL}</td>
+                  <td>${festival.URL}</td>
+              </tr>
+          </c:forEach>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="scripts/app.js"></script>
 </body>
 </html>

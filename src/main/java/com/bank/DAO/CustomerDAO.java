@@ -6,6 +6,7 @@ import com.bank.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 public class CustomerDAO {
@@ -28,9 +29,25 @@ public class CustomerDAO {
         ResultSet rs=ps.executeQuery();
         Customer c = null;
         while (rs.next()) {
-            list.add(new Customer(rs.getString("name"), rs.getString("email"), rs.getString("password"), rs.getString("account_num")));
+            list.add(new Customer(rs.getInt("cust_id"), rs.getString("name"), rs.getString("email"), rs.getString("password"), rs.getString("account_num")));
         }
         return list;
+    }
+    public Customer getCustomerByEmail(String email) throws SQLException {
+        String query="select * from Customer where email=?";
+        PreparedStatement ps=con.prepareStatement(query);
+        ps.setString(1, email);
+        ResultSet rs=ps.executeQuery();
+        Customer c = null;
+        if (rs.next()) {
+            c=new Customer();
+            c.setId(rs.getInt("cust_id"));
+            c.setName(rs.getString("name"));
+            c.setEmail(rs.getString("email"));
+            c.setPassword(rs.getString("password"));
+            c.setAccountNumber(rs.getString("account_num"));
+        }
+        return c;
     }
 
     public Customer getCustomerByCustID(int cust_id) throws SQLException {
@@ -41,6 +58,7 @@ public class CustomerDAO {
         Customer c = null;
         if (rs.next()) {
             c=new Customer();
+            c.setId(rs.getInt("cust_id"));
             c.setName(rs.getString("name"));
             c.setEmail(rs.getString("email"));
             c.setPassword(rs.getString("password"));
@@ -61,7 +79,7 @@ public class CustomerDAO {
     }
 
     public boolean updateCustomer(int cust_id, String name, String email, String password, String accountNumber) throws SQLException {
-        String query = "update Customer set name=?,email=?,password=? account_num=? where cust_id=?";
+        String query = "update Customer set name=?,email=?,password=?,account_num=? where cust_id=?";
         PreparedStatement ps = con.prepareStatement(query);
         ps.setString(1, name);
         ps.setString(2, email);

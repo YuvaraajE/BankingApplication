@@ -19,6 +19,10 @@ public class Customer {
         this.password = password;
         this.accountNumber = accountNumber;
     }
+    public Customer(int id, String name, String email, String password, String accountNumber) {
+        this(name, email, password, accountNumber);
+        this.cust_id = id;
+    }
     public String getName() {
         return name;
     }

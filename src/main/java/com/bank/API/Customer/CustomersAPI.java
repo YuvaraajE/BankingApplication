@@ -64,7 +64,13 @@ public class CustomersAPI extends HttpServlet {
             out.print("New customer is successfully Created!");
             out.flush();
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            if (e.getMessage().contains("Duplicate")) {
+                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.setContentType("application/text");
+                PrintWriter out = resp.getWriter();
+                out.print("User with that email already exists!");
+                out.flush();
+            }
         }
     }
 }

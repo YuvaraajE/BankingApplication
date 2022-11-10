@@ -59,7 +59,13 @@ public class AccountsAPI extends HttpServlet {
             out.print("Account is successfully created!");
             out.flush();
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.getMessage().contains("Duplicate")) {
+                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                resp.setContentType("application/text");
+                PrintWriter out = resp.getWriter();
+                out.print("Account already exists!");
+                out.flush();
+            }
         }
     }
 }
