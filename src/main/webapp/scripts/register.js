@@ -1,5 +1,5 @@
-const registerForm = document.getElementById('registerForm');
-registerForm.addEventListener('submit', (event) => {
+const register = document.getElementById('registerForm');
+register.addEventListener('submit', (event) => {
   event.preventDefault();
   postCustomerData();
 });
@@ -8,7 +8,6 @@ registerForm.addEventListener('submit', (event) => {
 document.getElementsByClassName("alert-close")[0].addEventListener('click', (event) => {
     document.getElementsByClassName("alert-close")[0].parentElement.style.visibility = "hidden";
 })
-
 function postCustomerData() {
     const formData = new FormData(registerForm);
     const customerData = { username: formData.get('name'), email: formData.get('email'), password: formData.get('password'), accountNumber: formData.get('accNum')};
@@ -45,4 +44,3 @@ function postCustomerData() {
         }
     });
 }
-

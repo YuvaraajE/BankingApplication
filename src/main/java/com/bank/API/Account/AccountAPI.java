@@ -37,14 +37,16 @@ public class AccountAPI extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter out = resp.getWriter();
         try {
             String account_num = req.getPathInfo().substring(1);
             cDs.deleteAccount(account_num);
             resp.setContentType("application/text");
-            PrintWriter out = resp.getWriter();
             out.print("Account with acc_num: " + account_num + " is successfully deleted!");
             out.flush();
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
+            out.print("Account could not be deleted!");
+            out.flush();
             throw new RuntimeException(e);
         }
     }

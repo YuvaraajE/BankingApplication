@@ -11,7 +11,7 @@
     <section class="vh-100" style="background-color: whitesmoke;">
       <% if (request.getAttribute("error") == "true") { %>
          <div class="alert alert-danger alert-dismissible fade show" role="alert" id="warningSection">
-             <section>Login was unsuccessful, check your email/password!</section>
+             <section>Some error has occurred, Try again!</section>
              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
          </div>
       <% } %>
@@ -40,7 +40,7 @@
           </div>
         </div>
       </section>
-    <script src="scripts/app.js"> </script>
+    <script src="scripts/app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

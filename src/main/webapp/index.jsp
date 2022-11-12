@@ -1,5 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.bank.BeanClass.Customer, com.bank.BeanClass.Account"%>
+<%@ page import="com.bank.BeanClass.Customer, com.bank.BeanClass.Account, com.bank.BeanClass.Transaction, java.util.ArrayList"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,30 +19,31 @@
           <h5 class="modal-title" id="editCustomerLabel">Edit Customer</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <form id="editForm" action="http://localhost:8080/Bank/customerEdit" method="POST">
         <div class="modal-body">
-          <form action="" method="post">
+            <input type="text" class="form-control" id="cust_id" name="cust_id" placeholder="Customer ID" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getId() %>" hidden>
             <div class="mb-3">
               <label for="name" class="col-form-label">Name:</label>
               <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getName() %>">
             </div>
             <div class="mb-3">
               <label for="accountNumber" class="col-form-label">Account Number:</label>
-              <input type="text" class="form-control" id="accountNumber" name="accountNumber" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getAccountNumber() %>" disabled>
+              <input type="text" class="form-control" id="accountNumber" name="accountNumber" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getAccountNumber() %>" readonly>
             </div>
             <div class="mb-3">
               <label for="email" class="col-form-label">E-mail:</label>
-              <input type="email" class="form-control" id="email" name="email" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getEmail() %>" disabled>
+              <input type="email" class="form-control" id="email" name="email" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getEmail() %>" readonly>
             </div>
             <div class="mb-3">
               <label for="password" class="col-form-label">Password:</label>
               <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getPassword() %>">
             </div>
-          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-outline-danger">Edit</button>
+          <button type="submit" class="btn btn-outline-danger">Edit</button>
         </div>
+    </form>
       </div>
     </div>
   </div>
@@ -53,6 +54,12 @@
         <a href="http://localhost:8080/Bank/logout" class="btn btn-outline-danger me-3 my-1">Logout</a>
       </form>
     </nav>
+      <% if (request.getAttribute("error") == "true") { %>
+         <div class="alert alert-danger alert-dismissible fade show" role="alert" id="warningSection">
+             <section>Login was unsuccessful, check your email/password!</section>
+             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+      <% } %>
     <div class="m-5">
       <div class="d-flex justify-content-between">
         <h3 class="fs-3">Hi, <%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getName() %> </h3>
@@ -72,25 +79,25 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form action="" method="post">
+                <form action="http://localhost:8080/Bank/transaction/deposit" method="post">
                   <div class="mb-3">
                     <label for="depositMoney" class="col-form-label">Deposit Money:</label>
                     <input type="text" class="form-control" id="depositMoney" name="depositMoney" placeholder="Deposit Amount">
                   </div>
                   <div class="mb-3">
                     <label for="description" class="col-form-label">Description:</label>
-                    <input type="text" class="form-control" id="description" name="description" placeholder="Short Description...">
+                    <input type="text" class="form-control" id="de((com.bank.BeanClass.Customer)session.getAttribute("customer"))scription" name="description" placeholder="Short Description...">
                   </div>
                   <div class="mb-3">
                     <label for="password" class="col-form-label">Password:</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                   </div>
-                </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline-danger">Deposit</button>
+                <button type="submit" class="btn btn-outline-danger">Deposit</button>
               </div>
+            </form>
             </div>
           </div>
         </div>
@@ -165,28 +172,32 @@
 
       </div>
       <div class="m-5">
-        <table class="table table-striped">
-          <tr>
-            <th>S.No</th>
-            <th>Time</th>
-            <th>Description</th>
-            <th>Credit</th>
-            <th>Debit</th>
-            <th>Balance</th>
-          </tr>
-          <tr>
-            <c:forEach items="${allFestivals}" var="festival">
-              <tr>
-                  <td>${festival.festivalName}</td>
-                  <td>${festival.location}</td>
-                  <td>${festival.startDate}</td>
-                  <td>${festival.endDate}</td>
-                  <td>${festival.URL}</td>
-                  <td>${festival.URL}</td>
-              </tr>
-          </c:forEach>
-          </tr>
+      <% if (((ArrayList<Transaction>)session.getAttribute("transactions")).size() == 0) { %>
+               <p class="fs-3"> No transaction recorded yet! </p>
+        <% } else { %>
+        <table class="table table-hover table-striped">
+             <tr>
+               <th>S.No</th>
+               <th>Time</th>
+               <th>Description</th>
+               <th>Credit</th>
+               <th>Debit</th>
+               <th>Balance</th>
+               <th></th>
+             </tr>
+             <c:forEach items="${sessionScope.transactions}" var="transaction" varStatus="theCount">
+             <tr>
+                 <td>${theCount.count}</td>
+                 <td>${transaction.getDate()}</td>
+                 <td>${transaction.getDescription()}</td>
+                 <td>${transaction.getAmtCredit()}</td>
+                 <td>${transaction.getAmtDebit()}</td>
+                 <td>${transaction.getBalance()}</td>
+                 <td> </td>
+             </tr>
+             </c:forEach>
         </table>
+      <% } %>
       </div>
     </div>
   </div>

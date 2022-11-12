@@ -40,6 +40,7 @@
     <servlet-class>com.bank.Controller.LogoutController</servlet-class>
   </servlet>
 
+
   <servlet>
     <servlet-name>accountAPI</servlet-name>
     <servlet-class>com.bank.API.Account.AccountAPI</servlet-class>
@@ -48,6 +49,11 @@
   <servlet>
     <servlet-name>accountsAPI</servlet-name>
     <servlet-class>com.bank.API.Account.AccountsAPI</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>editCustomer</servlet-name>
+    <servlet-class>com.bank.Controller.EditCustomerController</servlet-class>
   </servlet>
 
   <servlet>
@@ -60,6 +66,20 @@
     <servlet-class>com.bank.API.Customer.CustomersAPI</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>transactionAPI</servlet-name>
+    <servlet-class>com.bank.API.Transaction.TransactionAPI</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>transactionsAPI</servlet-name>
+    <servlet-class>com.bank.API.Transaction.TransactionsAPI</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>transactionController</servlet-name>
+    <servlet-class>com.bank.Controller.TransactionController</servlet-class>
+  </servlet>
 
   <!--mapping-->
   <filter-mapping>
@@ -86,9 +106,15 @@
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
 
+
   <servlet-mapping>
   <servlet-name>customerAPI</servlet-name>
   <url-pattern>/api/customer/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>editCustomer</servlet-name>
+    <url-pattern>/customerEdit</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -105,5 +131,21 @@
     <servlet-name>accountsAPI</servlet-name>
     <url-pattern>/api/account</url-pattern>
   </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>transactionAPI</servlet-name>
+    <url-pattern>/api/transaction/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>transactionsAPI</servlet-name>
+    <url-pattern>/api/transaction</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>transactionController</servlet-name>
+    <url-pattern>/transaction/*</url-pattern>
+  </servlet-mapping>
+
 
 </web-app>

@@ -1,37 +1,33 @@
 package com.bank.BeanClass;
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 public class Transaction {
     private int transId;
-    private LocalDateTime time;
+    private Date time;
     private String description;
     private float amtDebit;
     private float amtCredit;
     private float balance;
     private String accountNumber;
 
-    public Transaction(int transId, String description, float amtDebit, float amtCredit, float balance, String accountNumber) {
-        this.transId = transId;
+    public Transaction(String description, float amtDebit, float amtCredit, float balance, String accountNumber) {
+        this.time = new Date(System.currentTimeMillis());
         this.description = description;
         this.amtDebit = amtDebit;
         this.amtCredit = amtCredit;
         this.balance = balance;
         this.accountNumber = accountNumber;
-        if (this.amtCredit != 0) {
-            this.balance += this.amtCredit;
-        }
-        else {
-            this.balance -= this.amtDebit;
-        }
     }
     public int getTransId() {
         return transId;
     }
-
-    public LocalDateTime getTime() {
+    public void setTransId(int transId) {
+        this.transId = transId;
+    }
+    public Date getDate() {
         return time;
     }
-    public void setTime(LocalDateTime time) {
+    public void setTime(Date time) {
         this.time = time;
     }
     public String getDescription() {
@@ -55,7 +51,8 @@ public class Transaction {
     public float getBalance() {
         return balance;
     }
+
     public String getAccountNumber() {
-        return accountNumber;
+        return this.accountNumber;
     }
 }

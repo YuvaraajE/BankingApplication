@@ -1,6 +1,6 @@
-package com.bank.API.Customer;
+package com.bank.API.Transaction;
 
-import com.bank.DAO.CustomerDAO;
+import com.bank.DAO.TransactionDAO;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -12,67 +12,53 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-public class CustomerAPI extends HttpServlet {
-    private final CustomerDAO cDs = CustomerDAO.getInstance();
+public class TransactionAPI extends HttpServlet {
+    private final TransactionDAO tDs = TransactionDAO.getInstance();
 
-    public CustomerAPI() throws SQLException, ClassNotFoundException {
+    public TransactionAPI() throws SQLException, ClassNotFoundException {
 
-    }
-
-    private static boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch(NumberFormatException e){
-            return false;
-        }
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
             String param = request.getPathInfo().substring(1);
-            com.bank.BeanClass.Customer customer = null;
-            if (isNumeric(param)) {
-                int cust_id = Integer.parseInt(param);
-                customer = cDs.getCustomerByCustID(cust_id);
-            }
-            else {
-                customer = cDs.getCustomerByEmail(param);
-            }
+            com.bank.BeanClass.Transaction transaction = null;
+            int trans_id = Integer.parseInt(param);
+            transaction = tDs.getTransaction(trans_id);
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
-            if (customer != null) {
+            if (transaction != null) {
                 JSONObject jo = new JSONObject();
-                jo.put("id", customer.getId());
-                jo.put("email", customer.getEmail());
-                jo.put("password", customer.getPassword());
-                jo.put("accountNumber", customer.getAccountNumber());
+                jo.put("Transaction ID", transaction.getTransId());
+                jo.put("Description", transaction.getDescription());
+                jo.put("Date", transaction.getDate());
+                jo.put("Debit", transaction.getAmtDebit());
+                jo.put("Credit", transaction.getAmtCredit());
+                jo.put("Balance", transaction.getBalance());
                 out.print(jo);
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                out.print("Customer not found");
+                out.print("Transaction not found");
             }
             out.flush();
-            } catch(SQLException | IOException e){
-                throw new RuntimeException(e);
-            }
+        } catch(SQLException | IOException e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
         try {
-            int cust_id = Integer.parseInt(req.getPathInfo().substring(1));
+            int trans_id = Integer.parseInt(req.getPathInfo().substring(1));
             resp.setContentType("application/text");
-            cDs.deleteCustomer(cust_id);
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            out.print("Customer not found");
+            PrintWriter out = resp.getWriter();
+            tDs.deleteTransaction(trans_id);
+            out.print("Transaction with id " + trans_id + " is successfully deleted!");
             out.flush();
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-
-            out.print("Customer not found");
-            out.flush();
+            PrintWriter out = resp.getWriter();
+            out.print("Transaction not found");
             throw new RuntimeException(e);
         }
     }
@@ -81,27 +67,28 @@ public class CustomerAPI extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         StringBuffer jb = new StringBuffer();
         String line = null;
-        int cust_id = Integer.parseInt(req.getPathInfo().substring(1));
+        int trans_id = Integer.parseInt(req.getPathInfo().substring(1));
         try {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
                 jb.append(line);
             try {
                 JSONObject jsonObject = new JSONObject(jb.toString());
-                String userName = jsonObject.getString("username");
-                String email = jsonObject.getString("email");
-                String password = jsonObject.getString("password");
-                String accountNumber = jsonObject.getString("accountNumber");
+                String desc = jsonObject.getString("description");
+                float debit = jsonObject.getFloat("debit");
+                float credit = jsonObject.getFloat("credit");
+                float balance = jsonObject.getFloat("balance");
+                String accountNumber = jsonObject.getString("account_num");
                 PrintWriter out = resp.getWriter();
                 resp.setContentType("application/text");
-                cDs.updateCustomer(cust_id, userName, email, password, accountNumber);
+                tDs.updateTransaction(desc, debit, credit, balance, trans_id, accountNumber);
                 resp.setStatus(HttpServletResponse.SC_OK);
-                out.print("Customer with id " + cust_id + " is successfully Updated!");
+                out.print("Transaction with id " + trans_id + " is successfully Updated!");
                 out.flush();
             } catch (SQLException e) {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 PrintWriter out = resp.getWriter();
-                out.print("Customer not found");
+                out.print("Transaction not found");
                 out.flush();
                 e.printStackTrace();
             }
