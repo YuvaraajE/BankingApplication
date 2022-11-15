@@ -26,6 +26,10 @@ public class Transaction {
         this(description, amtDebit, amtCredit, balance, accountNumber, toId);
         this.isRemoved = isRemoved;
     }
+    public Transaction(int trans_id, String description, float amtDebit, float amtCredit, float balance, String accountNumber, int toId,int isRemoved) {
+        this(description, amtDebit, amtCredit, balance, accountNumber, toId, isRemoved);
+        this.transId = trans_id;
+    }
     public int getTransId() {
         return transId;
     }

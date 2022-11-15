@@ -6,6 +6,7 @@ import com.bank.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class TransactionDAO {
@@ -34,9 +35,9 @@ public class TransactionDAO {
         return t;
     }
 
-    public boolean createTransaction(Transaction t) throws SQLException {
+    public int createTransaction(Transaction t) throws SQLException {
         String query = "insert into Transaction(date_time,description,debit,credit,balance,account_num,toId) values (?,?,?,?,?,?,?)";
-        PreparedStatement ps = con.prepareStatement(query);
+        PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         ps.setTimestamp(1, t.getDate());
         ps.setString(2, t.getDescription());
         ps.setFloat(3, t.getAmtDebit());
@@ -44,7 +45,10 @@ public class TransactionDAO {
         ps.setFloat(5, t.getBalance());
         ps.setString(6, t.getAccountNumber());
         ps.setInt(7, t.getToId());
-        return ps.execute();
+        ps.executeUpdate();
+        ResultSet rs = ps.getGeneratedKeys();
+        rs.next();
+        return rs.getInt(1);
     }
 
     public boolean updateTransaction(Transaction t) throws SQLException {

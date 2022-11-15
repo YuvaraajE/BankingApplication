@@ -90,7 +90,6 @@ public class CustomerDAO {
         ps.setString(2, c.getEmail());
         ps.setString(3, c.getPassword());
         ps.setString(4, c.getAccountNumber());
-        System.out.println(c);
         return ps.execute();
     }
 

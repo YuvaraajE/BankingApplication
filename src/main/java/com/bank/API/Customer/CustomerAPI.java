@@ -33,17 +33,20 @@ public class CustomerAPI extends HttpServlet {
             String param = request.getPathInfo().substring(1);
             com.bank.BeanClass.Customer customer = null;
             if (isNumeric(param)) {
-                int cust_id = Integer.parseInt(param);
-                customer = cDs.getCustomerByCustID(cust_id);
+                customer = cDs.getCustomerByCustID(Integer.parseInt(param));
+            }
+            else if (param.contains("@")) {
+                customer = cDs.getCustomerByEmail(param);
             }
             else {
-                customer = cDs.getCustomerByEmail(param);
+                customer = cDs.getCustomerByAcccountNumber(param);
             }
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
             if (customer != null) {
                 JSONObject jo = new JSONObject();
                 jo.put("id", customer.getId());
+                jo.put("name", customer.getName());
                 jo.put("email", customer.getEmail());
                 jo.put("password", customer.getPassword());
                 jo.put("accountNumber", customer.getAccountNumber());

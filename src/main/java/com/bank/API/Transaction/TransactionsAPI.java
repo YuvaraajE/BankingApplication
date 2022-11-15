@@ -31,8 +31,10 @@ public class TransactionsAPI extends HttpServlet {
                 jo.put("Date", transaction.getDate());
                 jo.put("Debit", transaction.getAmtDebit());
                 jo.put("Credit", transaction.getAmtCredit());
-                jo.put("To", transaction.getToId());
                 jo.put("Balance", transaction.getBalance());
+                jo.put("IsRemoved", transaction.getIsRemoved());
+                jo.put("Account", transaction.getAccountNumber());
+                jo.put("ToId", transaction.getToId());
                 ja.put(jo);
             }
             response.setContentType("application/json");
@@ -63,10 +65,12 @@ public class TransactionsAPI extends HttpServlet {
             int toId = jsonObject.getInt("toId");
             String accountNumber = jsonObject.getString("account_num");
             TransactionDAO tDs = TransactionDAO.getInstance();
-            tDs.createTransaction(new Transaction(desc, debit, credit, balance, accountNumber, toId));
-            resp.setContentType("application/text");
+            int trans_id = tDs.createTransaction(new Transaction(desc, debit, credit, balance, accountNumber, toId, 0));
+            resp.setContentType("application/json");
             PrintWriter out = resp.getWriter();
-            out.print("New transaction is successfully Created!");
+            JSONObject jo = new JSONObject();
+            jo.put("trans_id", trans_id);
+            out.print(jo);
             out.flush();
         }
         catch (SQLException | ClassNotFoundException e) {
