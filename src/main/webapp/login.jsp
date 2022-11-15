@@ -24,11 +24,11 @@
                   <h3 class="mb-5">Sign in</h3>
                   <form action="http://localhost:8080/Bank/login" method="post">
                   <div class="form-outline mb-4">
-                    <input type="email" id="email" class="form-control form-control-lg" name="email" placeholder="E-mail ID"/>
+                    <input type="email" id="email" class="form-control form-control-lg" name="email" placeholder="E-mail ID" required/>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <input type="password" id="pass" class="form-control form-control-lg" name="password" placeholder="Password"/>
+                    <input type="password" id="pass" class="form-control form-control-lg" name="password" placeholder="Password" required/>
                   </div>
                   <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
                   <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/Bank/register"

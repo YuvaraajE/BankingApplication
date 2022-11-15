@@ -28,33 +28,36 @@ public class TransactionDAO {
         ResultSet rs=ps.executeQuery();
         Transaction t = null;
         if (rs.next()) {
-            t=new Transaction(rs.getString("description"), rs.getFloat("debit"), rs.getFloat("credit"), rs.getFloat("balance"), rs.getString("account_num"));
+            t=new Transaction(rs.getString("description"), rs.getFloat("debit"), rs.getFloat("credit"), rs.getFloat("balance"), rs.getString("account_num"), rs.getInt("toId"),rs.getInt("isRemoved"));
             t.setTransId(trans_id);
         }
         return t;
     }
 
     public boolean createTransaction(Transaction t) throws SQLException {
-        String query = "insert into Transaction(date_time,description,debit,credit,balance,account_num) values (?,?,?,?,?,?)";
+        String query = "insert into Transaction(date_time,description,debit,credit,balance,account_num,toId) values (?,?,?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(query);
-        ps.setDate(1, t.getDate());
+        ps.setTimestamp(1, t.getDate());
         ps.setString(2, t.getDescription());
         ps.setFloat(3, t.getAmtDebit());
         ps.setFloat(4, t.getAmtCredit());
         ps.setFloat(5, t.getBalance());
         ps.setString(6, t.getAccountNumber());
+        ps.setInt(7, t.getToId());
         return ps.execute();
     }
 
-    public boolean updateTransaction(String desc, float debit, float credit, float balance, int trans_id, String accountNumber) throws SQLException {
-        String query = "update Transaction set description=?,debit=?,credit=?,balance=?,account_num=? where trans_id=?";
+    public boolean updateTransaction(Transaction t) throws SQLException {
+        String query = "update Transaction set description=?,debit=?,credit=?,balance=?,account_num=?,toId=?,isRemoved=? where trans_id=?";
         PreparedStatement ps = con.prepareStatement(query);
-        ps.setString(1, desc);
-        ps.setFloat(2, debit);
-        ps.setFloat(3, credit);
-        ps.setFloat(4, balance);
-        ps.setString(5, accountNumber);
-        ps.setInt(6, trans_id);
+        ps.setString(1, t.getDescription());
+        ps.setFloat(2, t.getAmtDebit());
+        ps.setFloat(3, t.getAmtCredit());
+        ps.setFloat(4, t.getBalance());
+        ps.setString(5, t.getAccountNumber());
+        ps.setInt(6, t.getToId());
+        ps.setInt(7, t.getIsRemoved());
+        ps.setInt(8, t.getTransId());
         return ps.execute();
     }
 
@@ -71,7 +74,7 @@ public class TransactionDAO {
         ResultSet rs = ps.executeQuery();
         ArrayList<Transaction> a = new ArrayList<Transaction>();
         while (rs.next()) {
-            Transaction t1 = new Transaction(rs.getString("description"), rs.getFloat("debit"), rs.getFloat("credit"), rs.getFloat("balance"), rs.getString("account_num"));
+            Transaction t1 = new Transaction(rs.getString("description"), rs.getFloat("debit"), rs.getFloat("credit"), rs.getFloat("balance"), rs.getString("account_num"), rs.getInt("toId"),rs.getInt("isRemoved"));
             t1.setTransId(rs.getInt("trans_id"));
             a.add(t1);
         }
@@ -85,7 +88,7 @@ public class TransactionDAO {
         ResultSet rs = ps.executeQuery();
         ArrayList<Transaction> a = new ArrayList<Transaction>();
         while (rs.next()) {
-            Transaction t1 = new Transaction(rs.getString("description"), rs.getFloat("debit"), rs.getFloat("credit"), rs.getFloat("balance"), rs.getString("account_num"));
+            Transaction t1 = new Transaction(rs.getString("description"), rs.getFloat("debit"), rs.getFloat("credit"), rs.getFloat("balance"), rs.getString("account_num"), rs.getInt("toId"),rs.getInt("isRemoved"));
             t1.setTransId(rs.getInt("trans_id"));
             a.add(t1);
         }

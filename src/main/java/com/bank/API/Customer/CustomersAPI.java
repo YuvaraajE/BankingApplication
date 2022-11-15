@@ -47,8 +47,7 @@ public class CustomersAPI extends HttpServlet {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
                 jb.append(line);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Couldn't find body in the post request.");
         }
         try {

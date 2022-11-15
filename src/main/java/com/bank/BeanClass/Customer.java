@@ -54,6 +54,18 @@ public class Customer {
         this.cust_id = id;
     }
 
+    @Override
+    public int hashCode() {
+        return 2;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Customer) {
+            return this.getId() == ((Customer) o).getId();
+        }
+        return false;
+    }
+    @Override
     public String toString() {
         return "Customer [cust_id=" + cust_id + ", name=" + name + ", email=" + email + ", password=" + password
                 + ", accountNumber=" + accountNumber + "]";

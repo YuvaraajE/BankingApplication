@@ -6,7 +6,6 @@ import com.bank.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 public class CustomerDAO {
@@ -41,6 +40,23 @@ public class CustomerDAO {
         Customer c = null;
         if (rs.next()) {
             c=new Customer();
+            c.setId(rs.getInt("cust_id"));
+            c.setName(rs.getString("name"));
+            c.setEmail(rs.getString("email"));
+            c.setPassword(rs.getString("password"));
+            c.setAccountNumber(rs.getString("account_num"));
+        }
+        return c;
+    }
+
+    public Customer getCustomerByAcccountNumber(String accountNumber) throws SQLException {
+        String query = "select * from Customer where account_num=?";
+        PreparedStatement ps = con.prepareStatement(query);
+        ps.setString(1, accountNumber);
+        ResultSet rs = ps.executeQuery();
+        Customer c = null;
+        if (rs.next()) {
+            c = new Customer();
             c.setId(rs.getInt("cust_id"));
             c.setName(rs.getString("name"));
             c.setEmail(rs.getString("email"));

@@ -31,6 +31,7 @@ public class TransactionsAPI extends HttpServlet {
                 jo.put("Date", transaction.getDate());
                 jo.put("Debit", transaction.getAmtDebit());
                 jo.put("Credit", transaction.getAmtCredit());
+                jo.put("To", transaction.getToId());
                 jo.put("Balance", transaction.getBalance());
                 ja.put(jo);
             }
@@ -59,9 +60,10 @@ public class TransactionsAPI extends HttpServlet {
             float debit = jsonObject.getFloat("debit");
             float credit = jsonObject.getFloat("credit");
             float balance = jsonObject.getFloat("balance");
+            int toId = jsonObject.getInt("toId");
             String accountNumber = jsonObject.getString("account_num");
             TransactionDAO tDs = TransactionDAO.getInstance();
-            tDs.createTransaction(new Transaction(desc, debit, credit, balance, accountNumber));
+            tDs.createTransaction(new Transaction(desc, debit, credit, balance, accountNumber, toId));
             resp.setContentType("application/text");
             PrintWriter out = resp.getWriter();
             out.print("New transaction is successfully Created!");

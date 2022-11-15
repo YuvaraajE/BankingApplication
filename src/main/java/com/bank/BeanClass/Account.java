@@ -1,6 +1,9 @@
 package com.bank.BeanClass;
 
+import java.text.DecimalFormat;
+
 public class Account {
+    private static final DecimalFormat df = new DecimalFormat("0.00");
     private String accountNumber;
     private float balance;
 
@@ -28,6 +31,10 @@ public class Account {
         return balance;
     }
     public void setBalance(float balance) {
-        this.balance = balance;
+        this.balance = Float.parseFloat(df.format(balance));
+    }
+
+    public String toString() {
+        return accountNumber + " " + df.format(balance);
     }
 }

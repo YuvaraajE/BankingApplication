@@ -20,11 +20,19 @@ public class EditCustomerController extends HttpServlet {
         String accountNumber = req.getParameter("accountNumber");
         try {
             CustomerDAO cust_ds = CustomerDAO.getInstance();
-            cust_ds.updateCustomer(cust_id, name, email, password, accountNumber);
             Customer customer = cust_ds.getCustomerByCustID(cust_id);
             HttpSession session = req.getSession();
-            session.setAttribute("customer", customer);
-            resp.sendRedirect("http://localhost:8080/Bank/");
+            if ((!customer.getEmail().equals(email)) || (!customer.getAccountNumber().equals(accountNumber))) {
+                session.setAttribute("error", "true");
+                session.setAttribute("message", "Email / Account Number cannot be edited!");
+                resp.sendRedirect("http://localhost:8080/Bank/?customersOp=0");
+            }
+            else {
+                cust_ds.updateCustomer(cust_id, name, email, password, accountNumber);
+                Customer updatedCustomer = cust_ds.getCustomerByCustID(cust_id);
+                session.setAttribute("customer", updatedCustomer);
+                resp.sendRedirect("http://localhost:8080/Bank/?customersOp=0");
+            }
         }
         catch (SQLException | ClassNotFoundException ex) {
             throw new RuntimeException(ex);

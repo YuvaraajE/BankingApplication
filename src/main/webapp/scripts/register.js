@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const register = document.getElementById('registerForm');
 register.addEventListener('submit', (event) => {
   event.preventDefault();

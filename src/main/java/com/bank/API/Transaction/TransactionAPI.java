@@ -1,5 +1,6 @@
 package com.bank.API.Transaction;
 
+import com.bank.BeanClass.Transaction;
 import com.bank.DAO.TransactionDAO;
 import org.json.JSONObject;
 
@@ -34,6 +35,7 @@ public class TransactionAPI extends HttpServlet {
                 jo.put("Date", transaction.getDate());
                 jo.put("Debit", transaction.getAmtDebit());
                 jo.put("Credit", transaction.getAmtCredit());
+                jo.put("To", transaction.getToId());
                 jo.put("Balance", transaction.getBalance());
                 out.print(jo);
             } else {
@@ -78,10 +80,11 @@ public class TransactionAPI extends HttpServlet {
                 float debit = jsonObject.getFloat("debit");
                 float credit = jsonObject.getFloat("credit");
                 float balance = jsonObject.getFloat("balance");
+                int toId = jsonObject.getInt("toId");
                 String accountNumber = jsonObject.getString("account_num");
                 PrintWriter out = resp.getWriter();
                 resp.setContentType("application/text");
-                tDs.updateTransaction(desc, debit, credit, balance, trans_id, accountNumber);
+                tDs.updateTransaction(new Transaction(desc, debit, credit, balance,accountNumber, toId));
                 resp.setStatus(HttpServletResponse.SC_OK);
                 out.print("Transaction with id " + trans_id + " is successfully Updated!");
                 out.flush();
