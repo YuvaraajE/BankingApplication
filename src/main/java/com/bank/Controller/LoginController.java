@@ -10,6 +10,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
+import org.jasypt.util.text.BasicTextEncryptor;
+import org.jasypt.util.text.TextEncryptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,8 +47,10 @@ public class LoginController extends HttpServlet{
                 view.forward(req, resp);
             }
             else {
-                String correctPassword = customer.getPassword();
-                if (correctPassword.equals(enteredPassword)) {
+                BasicTextEncryptor textEncryptor = RegisterController.getEncryptor();
+                String correctPasswordEncrypted = customer.getPassword();
+                String decryptedData = textEncryptor.decrypt(correctPasswordEncrypted);
+                if (decryptedData.equals(enteredPassword)) {
                     redirectToIndex(req, resp, customer);
                 } else {
                     RequestDispatcher view = req.getRequestDispatcher("login.jsp");

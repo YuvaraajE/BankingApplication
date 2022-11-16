@@ -4,6 +4,7 @@ import com.bank.BeanClass.Account;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 public class AccountController {
     static Account getAccount(HttpServletRequest req, HttpServletResponse resp, String accountNumber) throws IOException {
@@ -59,6 +61,20 @@ public class AccountController {
         StringEntity stringEntity = new StringEntity(jo.toString());
         put.setEntity(stringEntity);
         response = httpClient.execute(put);
+        return response;
+    }
+
+    static HttpResponse createAccount(String accountNumber, float balance,HttpClient httpClient) throws IOException {
+        HttpResponse response;
+        HttpPost post = new HttpPost("http://localhost:8080/Bank/api/account");
+        post.setHeader("Accept", "application/json");
+        post.setHeader("Content-type", "application/json");
+        JSONObject jo = new JSONObject();
+        jo.put("account_num", accountNumber);
+        jo.put("balance", balance);
+        StringEntity stringEntity = new StringEntity(jo.toString());
+        post.setEntity(stringEntity);
+        response = httpClient.execute(post);
         return response;
     }
 }

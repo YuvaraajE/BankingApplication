@@ -3,8 +3,6 @@ package com.bank;
 import com.bank.BeanClass.Account;
 import com.bank.BeanClass.Customer;
 import com.bank.BeanClass.Transaction;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +50,6 @@ public class AuthenticationFilter implements Filter {
         String[] urlTokens = req.getRequestURL().toString().split("/");
         String type = urlTokens[urlTokens.length - 2];
         String value = urlTokens[urlTokens.length - 1];
-        System.out.println(type + " " + value);
         return true;
     }
 }

@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,12 +35,15 @@ public class TransactionController extends HttpServlet {
         HttpSession session = req.getSession();
         Customer customer = (Customer) session.getAttribute("customer");
         ArrayList<Customer> customers = (ArrayList<Customer>) session.getAttribute("customers");
+        BasicTextEncryptor textEncryptor = RegisterController.getEncryptor();
+        String correctPasswordEncrypted = customer.getPassword();
+        String decryptedData = textEncryptor.decrypt(correctPasswordEncrypted);
         if (password == null || description == null) {
             session.setAttribute("error", "true");
             session.setAttribute("message", "Description/Password cannot be empty!");
             resp.sendRedirect("http://localhost:8080/Bank/?customersOp=0");
         }
-        else if (!password.equals(customer.getPassword())) {
+        else if (!password.equals(decryptedData)) {
             session.setAttribute("error", "true");
             session.setAttribute("message", "Password is incorrect");
             resp.sendRedirect("http://localhost:8080/Bank/?customersOp=0");

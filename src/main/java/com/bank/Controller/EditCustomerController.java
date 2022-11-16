@@ -4,9 +4,11 @@ import com.bank.BeanClass.Customer;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,6 +72,23 @@ public class EditCustomerController extends HttpServlet {
                 resp.sendRedirect("http://localhost:8080/Bank/?customersOp=0");
             }
         }
+    }
+
+    static HttpResponse CreateCustomer(String username, String email, String password, String accountNumber, HttpClient httpClient) throws IOException {
+        AccountController.createAccount(accountNumber, 0f, httpClient);
+        BasicTextEncryptor textEncryptor = RegisterController.getEncryptor();
+        String encryptedPassword = textEncryptor.encrypt(password);
+        HttpPost post = new HttpPost("http://localhost:8080/Bank/api/customer");
+        post.setHeader("Accept", "application/json");
+        post.setHeader("Content-type", "application/json");
+        JSONObject jo = new JSONObject();
+        jo.put("username", username);
+        jo.put("email", email);
+        jo.put("password", encryptedPassword);
+        jo.put("accountNumber", accountNumber);
+        StringEntity stringEntity = new StringEntity(jo.toString());
+        post.setEntity(stringEntity);
+        return httpClient.execute(post);
     }
 
     static HttpResponse UpdateCustomer(int cust_id, String name, String email, String password, String accountNumber, HttpClient httpClient) throws IOException {
