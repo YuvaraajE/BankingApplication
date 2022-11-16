@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Base64;
 
 
 public class RegisterController extends HttpServlet{
@@ -23,11 +24,12 @@ public class RegisterController extends HttpServlet{
     }public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String password = new String(Base64.getDecoder().decode(req.getParameter("password")));
         String accountNumber = req.getParameter("accNum");
+        String panNumber = req.getParameter("panNumber");
         float balance = 0;
         HttpClient httpClient = HttpClients.createDefault();
-        HttpResponse res = EditCustomerController.CreateCustomer(name, email, password, accountNumber, httpClient);
+        HttpResponse res = EditCustomerController.CreateCustomer(name, email, password, accountNumber, panNumber,httpClient);
         if(200 == res.getStatusLine().getStatusCode()) {
             resp.sendRedirect("http://localhost:8080/Bank/login");
         }
@@ -39,7 +41,7 @@ public class RegisterController extends HttpServlet{
         }
     }
 
-    static BasicTextEncryptor getEncryptor() {
+    public static BasicTextEncryptor getEncryptor() {
         if (textEncryptor == null) {
             textEncryptor = new BasicTextEncryptor();
             String key = "X2#23432rSKJKSL12";

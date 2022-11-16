@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page import="com.bank.BeanClass.Customer, com.bank.BeanClass.Account, com.bank.BeanClass.Transaction, com.bank.DAO.CustomerDAO, java.util.ArrayList"%>
+<%@ page import="com.bank.BeanClass.Customer, com.bank.BeanClass.Account, com.bank.BeanClass.Transaction, com.bank.DAO.CustomerDAO, java.util.ArrayList, com.bank.Controller.RegisterController"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,12 +32,16 @@
               <input type="text" class="form-control" id="accountNumber" name="accountNumber" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getAccountNumber() %>" readonly>
             </div>
             <div class="mb-3">
+              <label for="panNumber" class="col-form-label">PAN Number:</label>
+              <input type="text" class="form-control" id="panNumber" name="panNumber" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getPANNumber() %>">
+            </div>
+            <div class="mb-3">
               <label for="email" class="col-form-label">E-mail:</label>
               <input type="email" class="form-control" id="email" name="email" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getEmail() %>" readonly>
             </div>
             <div class="mb-3">
               <label for="password" class="col-form-label">Password:</label>
-              <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="<%= ((com.bank.BeanClass.Customer)session.getAttribute("customer")).getPassword() %>">
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="<%= com.bank.Controller.RegisterController.getEncryptor().decrypt(((com.bank.BeanClass.Customer)session.getAttribute("customer")).getPassword()) %>">
             </div>
         </div>
         <div class="modal-footer">

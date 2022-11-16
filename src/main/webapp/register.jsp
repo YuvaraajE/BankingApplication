@@ -21,7 +21,7 @@
               <div class="card shadow-2-strong" style="border-radius: 1rem;">
                 <div class="card-body p-5 text-center">
                   <h3 class="mb-5">Sign Up</h3>
-                  <form action="/Bank/register" method="POST">
+                  <form onsubmit="return encryptPassword()" action="/Bank/register" method="POST">
                     <div class="form-outline mb-4">
                         <input type="text" id="name" class="form-control form-control-lg" name="name" placeholder="Name" required/>
                     </div>
@@ -33,7 +33,9 @@
                     <div class="form-outline mb-4">
                         <input type="text" id="accNum" class="form-control form-control-lg" name="accNum" placeholder="Account Number" required/>
                     </div>
-
+                    <div class="form-outline mb-4">
+                      <input type="text" class="form-control form-control-lg" id="panNumber" name="panNumber" placeholder="PAN Number" required>
+                   </div>
                     <div class="form-outline mb-4">
                         <input type="password" id="pass" class="form-control form-control-lg" name="password" placeholder="Password" required/>
                     </div>
@@ -48,7 +50,20 @@
           </div>
         </div>
       </section>
-    <script src="scripts/register.js"></script>
+    <script>
+        function encryptPassword(){
+          try {
+            var passwordElement = document.getElementById('pass');
+            let password = passwordElement.value;
+            let encodedData = window.btoa(password);
+            passwordElement.value = encodedData;
+            return true;
+          } catch (error) {
+            console.log(error.message);
+          }
+
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

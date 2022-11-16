@@ -28,7 +28,7 @@ public class CustomerDAO {
         ResultSet rs=ps.executeQuery();
         Customer c = null;
         while (rs.next()) {
-            list.add(new Customer(rs.getInt("cust_id"), rs.getString("name"), rs.getString("email"), rs.getString("password"), rs.getString("account_num")));
+            list.add(new Customer(rs.getInt("cust_id"), rs.getString("name"), rs.getString("email"), rs.getString("password"), rs.getString("account_num"), rs.getString("pan_num")));
         }
         return list;
     }
@@ -45,6 +45,7 @@ public class CustomerDAO {
             c.setEmail(rs.getString("email"));
             c.setPassword(rs.getString("password"));
             c.setAccountNumber(rs.getString("account_num"));
+            c.setPANNumber(rs.getString("pan_num"));
         }
         return c;
     }
@@ -62,6 +63,7 @@ public class CustomerDAO {
             c.setEmail(rs.getString("email"));
             c.setPassword(rs.getString("password"));
             c.setAccountNumber(rs.getString("account_num"));
+            c.setPANNumber(rs.getString("pan_num"));
         }
         return c;
     }
@@ -79,28 +81,31 @@ public class CustomerDAO {
             c.setEmail(rs.getString("email"));
             c.setPassword(rs.getString("password"));
             c.setAccountNumber(rs.getString("account_num"));
+            c.setPANNumber(rs.getString("pan_num"));
         }
         return c;
     }
 
     public boolean createCustomer(Customer c) throws SQLException {
-        String query = "insert into Customer(name,email,password,account_num) values(?,?,?,?)";
+        String query = "insert into Customer(name,email,password,account_num, pan_num) values(?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(query);
         ps.setString(1, c.getName());
         ps.setString(2, c.getEmail());
         ps.setString(3, c.getPassword());
         ps.setString(4, c.getAccountNumber());
+        ps.setString(5, c.getPANNumber());
         return ps.execute();
     }
 
-    public boolean updateCustomer(int cust_id, String name, String email, String password, String accountNumber) throws SQLException {
-        String query = "update Customer set name=?,email=?,password=?,account_num=? where cust_id=?";
+    public boolean updateCustomer(int cust_id, String name, String email, String password, String accountNumber, String panNumber) throws SQLException {
+        String query = "update Customer set name=?,email=?,password=?,account_num=?,pan_num=? where cust_id=?";
         PreparedStatement ps = con.prepareStatement(query);
         ps.setString(1, name);
         ps.setString(2, email);
         ps.setString(3, password);
         ps.setString(4, accountNumber);
-        ps.setInt(5, cust_id);
+        ps.setString(5, panNumber);
+        ps.setInt(6, cust_id);
         return ps.execute();
     }
 

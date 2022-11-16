@@ -7,20 +7,24 @@ public class Customer {
     private String password;
     private String accountNumber;
 
+    private String PANNumber;
+
     public Customer() {
         this.name = null;
         this.email = null;
         this.password = null;
         this.accountNumber = null;
+        this.PANNumber = null;
     }
-    public Customer(String name, String email, String password, String accountNumber) {
+    public Customer(String name, String email, String password, String accountNumber, String pan) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.accountNumber = accountNumber;
+        this.PANNumber = pan;
     }
-    public Customer(int id, String name, String email, String password, String accountNumber) {
-        this(name, email, password, accountNumber);
+    public Customer(int id, String name, String email, String password, String accountNumber, String pan) {
+        this(name, email, password, accountNumber, pan);
         this.cust_id = id;
     }
     public String getName() {
@@ -52,6 +56,13 @@ public class Customer {
     }
     public void setId(int id) {
         this.cust_id = id;
+    }
+
+    public String getPANNumber() {
+        return this.PANNumber;
+    }
+    public void setPANNumber(String panNumber) {
+        this.PANNumber = panNumber;
     }
 
     @Override

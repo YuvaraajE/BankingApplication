@@ -22,7 +22,7 @@
                 <div class="card-body p-5 text-center">
 
                   <h3 class="mb-5">Sign in</h3>
-                  <form action="http://localhost:8080/Bank/login" method="post">
+                  <form onsubmit="return encryptPassword()" action="http://localhost:8080/Bank/login" method="post">
                   <div class="form-outline mb-4">
                     <input type="email" id="email" class="form-control form-control-lg" name="email" placeholder="E-mail ID" required/>
                   </div>
@@ -40,7 +40,20 @@
           </div>
         </div>
       </section>
-    <script src="scripts/app.js"></script>
+      <script>
+        function encryptPassword(){
+          try {
+            var passwordElement = document.getElementById('pass');
+            let password = passwordElement.value;
+            let encodedData = window.btoa(password);
+            passwordElement.value = encodedData;
+            return true;
+          } catch (error) {
+            console.log(error.message);
+          }
+
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

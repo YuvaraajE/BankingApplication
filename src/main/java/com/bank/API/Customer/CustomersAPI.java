@@ -30,6 +30,7 @@ public class CustomersAPI extends HttpServlet {
                 jo.put("email", customer.getEmail());
                 jo.put("password", customer.getPassword());
                 jo.put("accountNumber", customer.getAccountNumber());
+                jo.put("panNumber", customer.getPANNumber());
                 ja.put(jo);
             }
             response.setContentType("application/json");
@@ -56,8 +57,9 @@ public class CustomersAPI extends HttpServlet {
             String email = jsonObject.getString("email");
             String password = jsonObject.getString("password");
             String accountNumber = jsonObject.getString("accountNumber");
+            String panNumber = jsonObject.getString("panNumber");
             CustomerDAO cDs = CustomerDAO.getInstance();
-            cDs.createCustomer(new Customer(userName, email, password, accountNumber));
+            cDs.createCustomer(new Customer(userName, email, password, accountNumber, panNumber));
             resp.setContentType("application/text");
             PrintWriter out = resp.getWriter();
             out.print("New customer is successfully Created!");

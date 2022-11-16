@@ -50,6 +50,7 @@ public class CustomerAPI extends HttpServlet {
                 jo.put("email", customer.getEmail());
                 jo.put("password", customer.getPassword());
                 jo.put("accountNumber", customer.getAccountNumber());
+                jo.put("panNumber", customer.getPANNumber());
                 out.print(jo);
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -95,9 +96,10 @@ public class CustomerAPI extends HttpServlet {
                 String email = jsonObject.getString("email");
                 String password = jsonObject.getString("password");
                 String accountNumber = jsonObject.getString("accountNumber");
+                String panNumber = jsonObject.getString("panNumber");
                 PrintWriter out = resp.getWriter();
                 resp.setContentType("application/text");
-                cDs.updateCustomer(cust_id, userName, email, password, accountNumber);
+                cDs.updateCustomer(cust_id, userName, email, password, accountNumber, panNumber);
                 resp.setStatus(HttpServletResponse.SC_OK);
                 out.print("Customer with id " + cust_id + " is successfully Updated!");
                 out.flush();

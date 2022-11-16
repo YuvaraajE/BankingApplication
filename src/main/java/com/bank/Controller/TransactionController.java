@@ -278,7 +278,6 @@ public class TransactionController extends HttpServlet {
         post.setEntity(stringEntity);
         HttpResponse response = httpClient.execute(post);
         String result = convertStreamToString(response.getEntity().getContent());
-        System.out.println("result: " + result);
         return new JSONObject(result).getInt("trans_id");
     }
 
